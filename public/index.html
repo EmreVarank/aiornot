@@ -5,65 +5,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="AI vs Human Content Detector — Analyze whether text was written by AI or a human. Paste text or upload PDF/DOCX files for instant analysis.">
-    <title>AI or Not — AI vs Human Content Detector</title>
+        content="AI Checker — Advanced Content Detector. Analyze whether text was written by AI or a human with high precision.">
+    <title>AI Checker — AI vs Human Content Detector</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 </head>
 
 <body>
-    <!-- Background -->
-    <div class="bg-glow bg-glow-1"></div>
-    <div class="bg-glow bg-glow-2"></div>
-    <div class="bg-glow bg-glow-3"></div>
+    <!-- Premium Ambient Background -->
+    <div class="ambient-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
     <div class="particles" id="particles"></div>
-
+    <div class="grid-overlay"></div>
 
     <header class="header">
         <div class="container">
             <div class="logo">
-                <svg class="logo-svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                    <circle cx="16" cy="16" r="14" stroke="url(#lg1)" stroke-width="2.5" />
-                    <path d="M10 16.5L14 20.5L22 12.5" stroke="url(#lg1)" stroke-width="2.5" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                    <defs>
-                        <linearGradient id="lg1" x1="0" y1="0" x2="32" y2="32">
-                            <stop offset="0%" stop-color="#818cf8" />
-                            <stop offset="100%" stop-color="#c084fc" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <span class="logo-text">AI or Not</span>
+                <div class="logo-icon" style="display: flex; align-items: center; justify-content: center;">
+                    <img src="img/background-removed-AI%20Checker%20(1)-standard.png" alt="AI Checker Logo" width="32" height="32" style="border-radius: 8px; object-fit: cover;">
+                </div>
+                <span class="logo-text">AI Checker</span>
             </div>
             <div class="header-right">
-                <button class="theme-toggle" id="theme-toggle" title="Toggle theme">
-                    <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <circle cx="12" cy="12" r="5" />
-                        <line x1="12" y1="1" x2="12" y2="3" />
-                        <line x1="12" y1="21" x2="12" y2="23" />
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                        <line x1="1" y1="12" x2="3" y2="12" />
-                        <line x1="21" y1="12" x2="23" y2="12" />
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                    </svg>
-                    <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                    </svg>
-                </button>
                 <nav class="nav">
                     <a href="#how-it-works" class="nav-link">How It Works</a>
                     <a href="#faq" class="nav-link">FAQ</a>
                 </nav>
+                <button class="theme-toggle" id="theme-toggle" title="Toggle theme">
+                    <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
             </div>
         </div>
     </header>
@@ -71,54 +61,56 @@
     <main>
         <!-- Hero -->
         <section class="hero">
-            <div class="container">
-                <div class="hero-badge"><span class="badge-dot"></span>Hybrid AI + Heuristic Analysis</div>
-                <h1 class="hero-title">Detect <span class="gradient-text">AI-Generated</span><br>Content Instantly</h1>
-                <p class="hero-subtitle">Paste text or upload a PDF/DOCX file. Our engine combines AI with heuristic
-                    analysis to determine if content was written by a human or generated by AI. Works with ChatGPT, Claude, Gemini, Grok and more.</p>
+            <div class="container hero-container">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span class="badge-text">Next-Gen Hybrid Detection Engine</span>
+                </div>
+                <h1 class="hero-title">
+                    Identify <span class="gradient-text">AI Content</span><br>With Absolute Precision
+                </h1>
+                <p class="hero-subtitle">
+                    Paste your text or upload a document. Our advanced algorithms combine heuristic analysis with LLM evaluation to distinguish human authenticity from synthetic generation.
+                </p>
             </div>
         </section>
 
         <!-- Input Section -->
         <section class="input-section" id="detector">
             <div class="container">
-                <div class="input-card">
+                <div class="glass-card input-card">
                     <!-- Tabs -->
                     <div class="tab-bar">
                         <button class="tab active" id="tab-text" data-tab="text">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                <polyline points="14 2 14 8 20 8" />
-                                <line x1="16" y1="13" x2="8" y2="13" />
-                                <line x1="16" y1="17" x2="8" y2="17" />
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
                             </svg>
-                            Paste Text
+                            Text Input
                         </button>
                         <button class="tab" id="tab-upload" data-tab="upload">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                <polyline points="17 8 12 3 7 8" />
-                                <line x1="12" y1="3" x2="12" y2="15" />
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
                             </svg>
-                            Upload File
+                            Document Upload
                         </button>
-                        <div class="tab-indicator" id="tab-indicator"></div>
                     </div>
 
                     <!-- Text Panel -->
                     <div class="tab-panel active" id="panel-text">
-                        <textarea id="text-input"
-                            placeholder="Paste your text here to analyze... (minimum 50 characters)"
-                            spellcheck="false"></textarea>
+                        <div class="textarea-wrapper">
+                            <textarea id="text-input" placeholder="Paste your text here to begin analysis... (min. 50 characters)" spellcheck="false"></textarea>
+                        </div>
                         <div class="input-footer">
                             <span class="char-count" id="char-count">0 characters</span>
                             <button class="btn-clear" id="btn-clear">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <line x1="18" y1="6" x2="6" y2="18" />
-                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
                                 </svg>
                                 Clear
                             </button>
@@ -128,52 +120,54 @@
                     <!-- Upload Panel -->
                     <div class="tab-panel" id="panel-upload">
                         <div class="upload-zone" id="upload-zone">
-                            <div class="upload-icon">
-                                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="1.5">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                    <polyline points="17 8 12 3 7 8" />
-                                    <line x1="12" y1="3" x2="12" y2="15" />
+                            <div class="upload-icon-wrapper">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
                                 </svg>
                             </div>
-                            <p class="upload-text">Drop your file here or <span class="upload-browse">browse</span></p>
-                            <p class="upload-hint">Supports PDF and DOCX • Max 10MB</p>
+                            <h3 class="upload-title">Drag & Drop Document</h3>
+                            <p class="upload-text">or <span class="upload-browse">browse files</span> from your computer</p>
+                            <div class="upload-badges">
+                                <span class="upload-badge">PDF</span>
+                                <span class="upload-badge">DOCX</span>
+                                <span class="upload-badge">Max 10MB</span>
+                            </div>
                             <input type="file" id="file-input" accept=".pdf,.docx" hidden>
                         </div>
                         <div class="file-info hidden" id="file-info">
-                            <div class="file-icon">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                    <polyline points="14 2 14 8 20 8" />
+                            <div class="file-icon-large">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
                                 </svg>
                             </div>
                             <div class="file-details">
-                                <span class="file-name" id="file-name"></span>
-                                <span class="file-size" id="file-size"></span>
+                                <span class="file-name" id="file-name">document.pdf</span>
+                                <span class="file-size" id="file-size">1.2 MB</span>
                             </div>
-                            <button class="btn-remove-file" id="btn-remove-file">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <line x1="18" y1="6" x2="6" y2="18" />
-                                    <line x1="6" y1="6" x2="18" y2="18" />
+                            <button class="btn-remove-file" id="btn-remove-file" title="Remove file">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
                                 </svg>
                             </button>
                         </div>
                     </div>
 
                     <!-- Analyze Button -->
-                    <button class="btn-analyze" id="btn-analyze" disabled>
+                    <button class="btn-primary btn-analyze" id="btn-analyze" disabled>
+                        <span class="btn-bg-glow"></span>
                         <span class="btn-text">
                             Analyze Content
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <line x1="5" y1="12" x2="19" y2="12" />
-                                <polyline points="12 5 19 12 12 19" />
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
                         </span>
                         <span class="btn-loader hidden">
-                            <span class="spinner"></span>Analyzing...
+                            <span class="spinner-modern"></span>Processing Analysis...
                         </span>
                     </button>
                 </div>
@@ -185,110 +179,101 @@
             <div class="container">
                 <!-- Fallback Banner -->
                 <div class="fallback-banner hidden" id="fallback-banner">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10" />
-                        <line x1="12" y1="8" x2="12" y2="12" />
-                        <line x1="12" y1="16" x2="12.01" y2="16" />
-                    </svg>
-                    <span id="fallback-msg">Results are based on heuristic analysis only. Add a Gemini API key for more
-                        accurate results.</span>
+                    <div class="fallback-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+                    <span id="fallback-msg">Results are based on heuristic analysis only.</span>
                 </div>
 
-                <div class="results-card">
-                    <!-- Verdict -->
-                    <div class="verdict-area">
-                        <div class="verdict-ring-wrap">
-                            <svg class="ring-svg" viewBox="0 0 200 200">
-                                <circle cx="100" cy="100" r="84" fill="none" stroke="rgba(255,255,255,0.07)"
-                                    stroke-width="10" />
-                                <circle cx="100" cy="100" r="84" fill="none" stroke="url(#ringGrad)" stroke-width="10"
-                                    stroke-dasharray="527.8" stroke-dashoffset="527.8" stroke-linecap="round"
-                                    class="ring-progress" id="ring-progress" transform="rotate(-90 100 100)" />
-                                <defs>
-                                    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" stop-color="var(--ring-c1, #818cf8)" />
-                                        <stop offset="100%" stop-color="var(--ring-c2, #c084fc)" />
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                            <div class="ring-inner">
-                                <span class="ring-pct" id="ring-pct">0%</span>
-                                <span class="ring-lbl">AI Score</span>
+                <div class="glass-card results-card">
+                    <div class="results-layout">
+                        <!-- Left: Verdict -->
+                        <div class="verdict-panel">
+                            <div class="verdict-ring-wrap">
+                                <svg class="ring-svg" viewBox="0 0 240 240">
+                                    <circle cx="120" cy="120" r="100" class="ring-track" />
+                                    <circle cx="120" cy="120" r="100" class="ring-progress" id="ring-progress" />
+                                    <defs>
+                                        <linearGradient id="ringGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="var(--ring-c1, #3b82f6)" />
+                                            <stop offset="100%" stop-color="var(--ring-c2, #8b5cf6)" />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                <div class="ring-inner">
+                                    <span class="ring-pct" id="ring-pct">0%</span>
+                                    <span class="ring-lbl">AI Probability</span>
+                                </div>
+                            </div>
+                            <div class="verdict-details">
+                                <div class="verdict-badge" id="verdict-badge">Analyzing</div>
+                                <h2 class="verdict-title" id="verdict-title">Processing...</h2>
+                                <p class="verdict-desc" id="verdict-desc"></p>
                             </div>
                         </div>
-                        <div class="verdict-text">
-                            <span class="verdict-badge" id="verdict-badge">Analyzing</span>
-                            <h2 class="verdict-title" id="verdict-title">Processing...</h2>
-                            <p class="verdict-desc" id="verdict-desc"></p>
+
+                        <!-- Right: Metrics -->
+                        <div class="metrics-panel">
+                            <h3 class="panel-title">Linguistic Fingerprint</h3>
+                            <div class="metrics-grid">
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <span class="metric-name">Uniformity</span>
+                                        <span class="metric-val" id="mval-uniformity">—</span>
+                                    </div>
+                                    <div class="metric-bar-wrap"><div class="metric-bar-fill" id="mfill-uniformity"></div></div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <span class="metric-name">Vocabulary</span>
+                                        <span class="metric-val" id="mval-vocabulary">—</span>
+                                    </div>
+                                    <div class="metric-bar-wrap"><div class="metric-bar-fill" id="mfill-vocabulary"></div></div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <span class="metric-name">Burstiness</span>
+                                        <span class="metric-val" id="mval-burstiness">—</span>
+                                    </div>
+                                    <div class="metric-bar-wrap"><div class="metric-bar-fill" id="mfill-burstiness"></div></div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <span class="metric-name">AI Patterns</span>
+                                        <span class="metric-val" id="mval-patterns">—</span>
+                                    </div>
+                                    <div class="metric-bar-wrap"><div class="metric-bar-fill" id="mfill-patterns"></div></div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <span class="metric-name">Coherence</span>
+                                        <span class="metric-val" id="mval-coherence">—</span>
+                                    </div>
+                                    <div class="metric-bar-wrap"><div class="metric-bar-fill" id="mfill-coherence"></div></div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <span class="metric-name">Naturalness</span>
+                                        <span class="metric-val" id="mval-naturalness">—</span>
+                                    </div>
+                                    <div class="metric-bar-wrap"><div class="metric-bar-fill" id="mfill-naturalness"></div></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Metrics -->
-                    <div class="metrics-grid">
-                        <div class="metric-card">
-                            <div class="metric-header"><span class="metric-icon">📏</span><span
-                                    class="metric-name">Sentence Uniformity</span></div>
-                            <div class="metric-bar-wrap">
-                                <div class="metric-bar-fill" id="mfill-uniformity"></div>
-                            </div>
-                            <div class="metric-footer"><span class="metric-val" id="mval-uniformity">—</span><span
-                                    class="metric-hint">AI text is more uniform</span></div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-header"><span class="metric-icon">📚</span><span
-                                    class="metric-name">Vocabulary Richness</span></div>
-                            <div class="metric-bar-wrap">
-                                <div class="metric-bar-fill" id="mfill-vocabulary"></div>
-                            </div>
-                            <div class="metric-footer"><span class="metric-val" id="mval-vocabulary">—</span><span
-                                    class="metric-hint">Diversity of word choice</span></div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-header"><span class="metric-icon">⚡</span><span
-                                    class="metric-name">Burstiness</span></div>
-                            <div class="metric-bar-wrap">
-                                <div class="metric-bar-fill" id="mfill-burstiness"></div>
-                            </div>
-                            <div class="metric-footer"><span class="metric-val" id="mval-burstiness">—</span><span
-                                    class="metric-hint">Writing rhythm variation</span></div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-header"><span class="metric-icon">🔍</span><span class="metric-name">AI
-                                    Phrase Patterns</span></div>
-                            <div class="metric-bar-wrap">
-                                <div class="metric-bar-fill" id="mfill-patterns"></div>
-                            </div>
-                            <div class="metric-footer"><span class="metric-val" id="mval-patterns">—</span><span
-                                    class="metric-hint">Common AI phrasing density</span></div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-header"><span class="metric-icon">🧩</span><span
-                                    class="metric-name">Structural Coherence</span></div>
-                            <div class="metric-bar-wrap">
-                                <div class="metric-bar-fill" id="mfill-coherence"></div>
-                            </div>
-                            <div class="metric-footer"><span class="metric-val" id="mval-coherence">—</span><span
-                                    class="metric-hint">Paragraph predictability</span></div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-header"><span class="metric-icon">🌿</span><span
-                                    class="metric-name">Naturalness</span></div>
-                            <div class="metric-bar-wrap">
-                                <div class="metric-bar-fill" id="mfill-naturalness"></div>
-                            </div>
-                            <div class="metric-footer"><span class="metric-val" id="mval-naturalness">—</span><span
-                                    class="metric-hint">Contractions, first-person</span></div>
-                        </div>
-                    </div>
-
-                    <!-- Sentence Highlight -->
+                    <!-- Bottom: Sentence Highlight -->
                     <div class="highlight-section">
                         <div class="highlight-header">
-                            <h3 class="section-label">Sentence-Level Analysis</h3>
+                            <h3 class="panel-title">Deep Sentence Scan</h3>
                             <div class="legend">
-                                <span class="legend-item"><span class="leg-dot ai-dot"></span>Likely AI</span>
+                                <span class="legend-item"><span class="leg-dot ai-dot"></span>AI Generated</span>
                                 <span class="legend-item"><span class="leg-dot mixed-dot"></span>Uncertain</span>
-                                <span class="legend-item"><span class="leg-dot human-dot"></span>Likely Human</span>
+                                <span class="legend-item"><span class="leg-dot human-dot"></span>Human Written</span>
                             </div>
                         </div>
                         <div class="highlight-body" id="highlight-body"></div>
@@ -296,19 +281,17 @@
 
                     <!-- Actions -->
                     <div class="result-actions">
-                        <button class="btn-action" id="btn-new-analysis">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <polyline points="1 4 1 10 7 10" />
-                                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                        <button class="btn-secondary" id="btn-new-analysis">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
                             </svg>
                             New Analysis
                         </button>
-                        <button class="btn-action" id="btn-copy-report">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" />
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                        <button class="btn-secondary" id="btn-copy-report">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                             </svg>
                             Copy Report
                         </button>
@@ -320,38 +303,42 @@
         <!-- How It Works -->
         <section class="how-section" id="how-it-works">
             <div class="container">
-                <h2 class="section-title">How It <span class="gradient-text">Works</span></h2>
+                <div class="section-heading">
+                    <h2 class="section-title">Detection <span class="gradient-text">Engine</span></h2>
+                    <p class="section-subtitle">How AI Checker analyzes your content</p>
+                </div>
                 <div class="steps-grid">
-                    <div class="step-card">
+                    <div class="glass-card step-card">
                         <div class="step-num">01</div>
-                        <div class="step-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="1.5">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                <polyline points="14 2 14 8 20 8" />
-                            </svg></div>
-                        <h3>Submit Content</h3>
-                        <p>Paste text directly or upload a PDF/DOCX document for analysis.</p>
+                        <div class="step-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
+                        <h3>Data Processing</h3>
+                        <p>We normalize text, extract structure from documents, and prepare the content for multi-layered neural analysis.</p>
                     </div>
-                    <div class="step-card">
+                    <div class="glass-card step-card">
                         <div class="step-num">02</div>
-                        <div class="step-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="1.5">
-                                <circle cx="12" cy="12" r="10" />
-                                <path d="M12 6v6l4 2" />
-                            </svg></div>
-                        <h3>Dual Analysis</h3>
-                        <p>Gemini AI analyses the writing style while heuristics examine patterns, vocabulary, and
-                            structure.</p>
+                        <div class="step-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                        </div>
+                        <h3>Hybrid Analysis</h3>
+                        <p>Our proprietary heuristic algorithms analyze burstiness, while LLM integration checks for generative footprints.</p>
                     </div>
-                    <div class="step-card">
+                    <div class="glass-card step-card">
                         <div class="step-num">03</div>
-                        <div class="step-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="1.5">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                                <polyline points="22 4 12 14.01 9 11.01" />
-                            </svg></div>
-                        <h3>Get Verdict</h3>
-                        <p>Receive a confidence score, metric breakdown, and sentence-level highlights.</p>
+                        <div class="step-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <h3>Precise Insights</h3>
+                        <p>Get a comprehensive breakdown including confidence scores, linguistic metrics, and sentence-level flagging.</p>
                     </div>
                 </div>
             </div>
@@ -360,61 +347,53 @@
         <!-- FAQ -->
         <section class="faq-section" id="faq">
             <div class="container">
-                <h2 class="section-title">Frequently Asked <span class="gradient-text">Questions</span></h2>
+                <div class="section-heading">
+                    <h2 class="section-title">Common <span class="gradient-text">Questions</span></h2>
+                </div>
                 <div class="faq-list">
-                    <div class="faq-item">
+                    <div class="glass-card faq-item">
                         <button class="faq-q" id="faq-q1">
-                            <span>How accurate is this detector?</span>
-                            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9" />
-                            </svg>
+                            <span>How accurate is AI Checker?</span>
+                            <div class="faq-icon-wrap">
+                                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
                         </button>
                         <div class="faq-ans">
-                            <p>When using the Gemini API, accuracy is significantly higher as a real LLM analyzes the
-                                text. Heuristic-only mode uses 6 statistical signals and is less reliable on short or
-                                ambiguous texts. Always treat results as estimates, not verdicts.</p>
+                            <div class="faq-ans-inner">
+                                <p>By leveraging a dual-engine approach (heuristic metrics + LLM verification), accuracy is exceptionally high. However, AI text generation is constantly evolving. Always treat results as highly educated estimates rather than absolute facts, especially on very short texts.</p>
+                            </div>
                         </div>
                     </div>
                     <div class="faq-item">
                         <button class="faq-q" id="faq-q2">
-                            <span>What file formats are supported?</span>
-                            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9" />
-                            </svg>
+                            <span>Which models can it detect?</span>
+                            <div class="faq-icon-wrap">
+                                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
                         </button>
                         <div class="faq-ans">
-                            <p>You can paste plain text directly, or upload PDF and DOCX files up to 10MB. Text is
-                                extracted automatically from documents before analysis.</p>
+                            <div class="faq-ans-inner">
+                                <p>Our system is designed to detect structural and linguistic patterns typical of all major LLMs, including GPT-3.5, GPT-4, Claude 3, Gemini, Llama, and Mistral.</p>
+                            </div>
                         </div>
                     </div>
                     <div class="faq-item">
                         <button class="faq-q" id="faq-q3">
-                            <span>Is my data stored or shared?</span>
-                            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9" />
-                            </svg>
+                            <span>Is my uploaded data private?</span>
+                            <div class="faq-icon-wrap">
+                                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
                         </button>
                         <div class="faq-ans">
-                            <p>No data is ever stored by this app. If you use the Gemini API, your text is sent directly
-                                to Google's API servers per their privacy policy. Heuristic analysis runs 100% locally
-                                in your browser.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <button class="faq-q" id="faq-q4">
-                            <span>What does "burstiness" mean?</span>
-                            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9" />
-                            </svg>
-                        </button>
-                        <div class="faq-ans">
-                            <p>Burstiness measures variation in writing rhythm. Humans naturally alternate between short
-                                punchy sentences and long complex ones. AI models tend to maintain a more consistent,
-                                predictable sentence length throughout a passage.</p>
+                            <div class="faq-ans-inner">
+                                <p>Absolutely. We employ a strict zero-retention policy. Texts are analyzed in memory and immediately discarded. No documents or text segments are ever saved to our databases or used to train models.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -426,20 +405,14 @@
         <div class="container">
             <div class="footer-inner">
                 <div class="footer-logo">
-                    <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
-                        <circle cx="16" cy="16" r="14" stroke="url(#lgf)" stroke-width="2.5" />
-                        <path d="M10 16.5L14 20.5L22 12.5" stroke="url(#lgf)" stroke-width="2.5" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <defs>
-                            <linearGradient id="lgf" x1="0" y1="0" x2="32" y2="32">
-                                <stop offset="0%" stop-color="#818cf8" />
-                                <stop offset="100%" stop-color="#c084fc" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                    <span>AI or Not</span>
+                    <img src="img/background-removed-AI%20Checker%20(1)-standard.png" alt="AI Checker Logo" width="28" height="28" style="border-radius: 6px; object-fit: cover;">
+                    <span>AI Checker</span>
                 </div>
-                <p class="footer-note">Heuristic analysis runs locally in your browser. No data stored.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+                <p class="footer-note">&copy; 2026 AI Checker. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -447,5 +420,4 @@
     <script src="analyzer.js"></script>
     <script src="app.js"></script>
 </body>
-
 </html>

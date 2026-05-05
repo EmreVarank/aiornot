@@ -352,7 +352,7 @@ btnCopyReport.addEventListener('click', () => {
     return `  ${k}: ${el ? el.textContent : ''}`;
   }).join('\n');
 
-  const report = `AI or Not — Analysis Report\n${'='.repeat(40)}\n${badge}\n${title}\n\n${desc}\n\nMetrics:\n${metricsText}\n\nAnalyzed: ${new Date().toLocaleString()}`;
+  const report = `AI Checker — Analysis Report\n${'='.repeat(40)}\n${badge}\n${title}\n\n${desc}\n\nMetrics:\n${metricsText}\n\nAnalyzed: ${new Date().toLocaleString()}`;
   navigator.clipboard.writeText(report).then(() => {
     btnCopyReport.textContent = '✅ Copied!';
     setTimeout(() => { btnCopyReport.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Report'; }, 2000);
