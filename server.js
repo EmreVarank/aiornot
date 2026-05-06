@@ -47,6 +47,7 @@ app.use(rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many requests, please try again later.' },
+  skip: (req) => req.path === '/health',
 }));
 
 // Stricter limit on the expensive /api/analyze endpoint
