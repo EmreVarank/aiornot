@@ -58,7 +58,7 @@ themeToggle.addEventListener('click', () => {
   localStorage.setItem('theme', next);
 });
 
-// ─── Backend API Call ──────────────────────────────────────────────────────────────────
+// ─── Backend API Call ─────────────────────────────────────────────────────────
 
 async function callAnalyzeAPI(text) {
   const res = await fetch('/api/analyze', {
@@ -181,7 +181,6 @@ async function handleAnalyze() {
   if (analysisInProgress || currentText.length < 50) return;
   analysisInProgress = true;
 
-  // Loading state
   btnText.classList.add('hidden');
   btnLoader.classList.remove('hidden');
   btnAnalyze.disabled = true;
@@ -210,7 +209,6 @@ async function handleAnalyze() {
 // ─── Display Results ──────────────────────────────────────────────────────────
 
 function displayResults(apiResult, heuristic, apiError) {
-  // Determine verdict source
   let aiScore, verdict, confidence, reasoning;
 
   if (apiResult) {
@@ -221,7 +219,6 @@ function displayResults(apiResult, heuristic, apiError) {
     if (verdict === 'mixed') aiScore = 50;
     fallbackBanner.classList.add('hidden');
   } else {
-    // Heuristic fallback
     aiScore = heuristic.overallScore;
     verdict = aiScore >= 60 ? 'ai' : aiScore >= 30 ? 'mixed' : 'human';
     confidence = aiScore >= 60 ? aiScore : aiScore <= 30 ? (100 - aiScore) : Math.abs(50 - aiScore) + 50;
@@ -231,20 +228,16 @@ function displayResults(apiResult, heuristic, apiError) {
     else fallbackMsg.textContent = 'API unavailable. Results are based on heuristic analysis only.';
   }
 
-  // Show section
   resultsSection.classList.remove('hidden');
   resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  // Ring animation
   animateRing(aiScore, verdict);
 
-  // Verdict text
   verdictBadge.className = `verdict-badge verdict-${verdict}`;
-  verdictBadge.textContent = verdict === 'ai' ? '🤖 AI Generated' : verdict === 'human' ? '✅ Human Written' : '⚠️ Mixed Content';
+  verdictBadge.textContent = verdict === 'ai' ? 'AI Generated' : verdict === 'human' ? 'Human Written' : 'Mixed Content';
   verdictTitle.textContent = verdict === 'ai' ? 'This content appears to be AI-generated' : verdict === 'human' ? 'This content appears to be human-written' : 'This content appears to be a mix of AI and human writing';
   verdictDesc.textContent = reasoning;
 
-  // Metrics (always from heuristic)
   const metricsOrder = ['uniformity', 'vocabulary', 'burstiness', 'patterns', 'coherence', 'naturalness'];
   metricsOrder.forEach((key, i) => {
     const m = heuristic.metrics[key];
@@ -256,7 +249,6 @@ function displayResults(apiResult, heuristic, apiError) {
     }, i * 120);
   });
 
-  // Sentence highlights
   renderSentenceHighlights(apiResult, heuristic);
 }
 
@@ -281,7 +273,6 @@ function animateRing(score, verdict) {
   document.documentElement.style.setProperty('--ring-c1', c1);
   document.documentElement.style.setProperty('--ring-c2', c2);
 
-  // Animate offset
   ringProgress.style.strokeDashoffset = circumference;
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
@@ -290,7 +281,6 @@ function animateRing(score, verdict) {
     });
   });
 
-  // Animate counter
   let current = 0;
   const target = score;
   const duration = 1500;
@@ -309,7 +299,6 @@ function animateRing(score, verdict) {
 function renderSentenceHighlights(apiResult, heuristic) {
   highlightBody.innerHTML = '';
 
-  // Merge API sentence labels with heuristic scores
   const apiMap = {};
   if (apiResult?.sentences) {
     apiResult.sentences.forEach(s => { apiMap[s.text.trim()] = s.label; });
@@ -354,8 +343,9 @@ btnCopyReport.addEventListener('click', () => {
 
   const report = `AI Checker — Analysis Report\n${'='.repeat(40)}\n${badge}\n${title}\n\n${desc}\n\nMetrics:\n${metricsText}\n\nAnalyzed: ${new Date().toLocaleString()}`;
   navigator.clipboard.writeText(report).then(() => {
-    btnCopyReport.textContent = '✅ Copied!';
-    setTimeout(() => { btnCopyReport.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Report'; }, 2000);
+    const orig = btnCopyReport.innerHTML;
+    btnCopyReport.textContent = 'Copied!';
+    setTimeout(() => { btnCopyReport.innerHTML = orig; }, 2000);
   });
 });
 
@@ -364,9 +354,49 @@ btnCopyReport.addEventListener('click', () => {
 document.querySelectorAll('.faq-q').forEach(btn => {
   btn.addEventListener('click', () => {
     const item = btn.closest('.faq-item');
-    item.classList.toggle('open');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
   });
 });
+
+// ─── Animated Counter ─────────────────────────────────────────────────────────
+
+function animateCounters() {
+  document.querySelectorAll('.stat-number[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    const duration = 2000;
+    const start = performance.now();
+
+    function tick(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(eased * target);
+      el.textContent = current.toLocaleString();
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+// ─── Scroll Reveal ────────────────────────────────────────────────────────────
+
+function initScrollReveal() {
+  const els = document.querySelectorAll('.step-card, .use-case-card, .testimonial-card, .faq-item, .cta-card');
+  els.forEach(el => el.classList.add('reveal'));
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  els.forEach(el => observer.observe(el));
+}
 
 // ─── Particles ────────────────────────────────────────────────────────────────
 
@@ -387,7 +417,6 @@ function initParticles() {
   }
 }
 
-// Inject float keyframes
 const styleEl = document.createElement('style');
 styleEl.textContent = `
   @keyframes float0 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
@@ -400,3 +429,5 @@ document.head.appendChild(styleEl);
 
 initTheme();
 initParticles();
+initScrollReveal();
+animateCounters();

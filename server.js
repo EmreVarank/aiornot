@@ -9,6 +9,8 @@ require('dotenv').config();
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
+app.set('trust proxy', 1);
+
 // ─── Validate env ─────────────────────────────────────────────────────────────
 if (!process.env.GEMINI_API_KEY) {
   console.error('[FATAL] GEMINI_API_KEY is not set in .env');

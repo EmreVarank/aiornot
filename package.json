@@ -1,13 +1,16 @@
 {
   "name": "aiornot",
   "version": "1.0.0",
-  "description": "",
+  "description": "AI Checker — Detect AI-generated content with hybrid analysis",
   "main": "server.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js"
   },
-  "keywords": [],
+  "keywords": ["ai-detection", "content-checker", "ai-detector"],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
