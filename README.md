@@ -9,7 +9,7 @@
 
 **Detect AI-generated content with 95%+ accuracy — free, private, and instant.**
 
-[Live Demo](https://aichecker.app) · [Report Bug](https://github.com/EmreVarank/aiornot/issues) · [Request Feature](https://github.com/EmreVarank/aiornot/issues)
+[Live Demo](https://aichecker-tsj4.onrender.com/) · [Report Bug](https://github.com/EmreVarank/aiornot/issues) · [Request Feature](https://github.com/EmreVarank/aiornot/issues)
 
 </div>
 
