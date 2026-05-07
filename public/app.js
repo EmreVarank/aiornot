@@ -215,8 +215,20 @@ function displayResults(apiResult, heuristic, apiError) {
     verdict = apiResult.verdict;
     confidence = apiResult.confidence;
     reasoning = apiResult.reasoning;
-    aiScore = verdict === 'human' ? 100 - confidence : confidence;
-    if (verdict === 'mixed') aiScore = 50;
+    if (verdict === 'human') {
+      aiScore = 100 - confidence;
+    } else if (verdict === 'mixed') {
+      // Derive real AI% from sentence labels
+      if (apiResult.sentences?.length) {
+        const aiCount    = apiResult.sentences.filter(s => s.label === 'ai').length;
+        const mixedCount = apiResult.sentences.filter(s => s.label === 'mixed').length;
+        aiScore = Math.round((aiCount + mixedCount * 0.5) / apiResult.sentences.length * 100);
+      } else {
+        aiScore = confidence;
+      }
+    } else {
+      aiScore = confidence;
+    }
     fallbackBanner.classList.add('hidden');
   } else {
     aiScore = heuristic.overallScore;
@@ -299,20 +311,22 @@ function animateRing(score, verdict) {
 function renderSentenceHighlights(apiResult, heuristic) {
   highlightBody.innerHTML = '';
 
-  const apiMap = {};
-  if (apiResult?.sentences) {
-    apiResult.sentences.forEach(s => { apiMap[s.text.trim()] = s.label; });
+  // Prefer Gemini's sentence-level labels — they are authoritative
+  if (apiResult?.sentences?.length) {
+    apiResult.sentences.forEach(s => {
+      const label = ['ai', 'human', 'mixed'].includes(s.label) ? s.label : 'mixed';
+      const span = document.createElement('span');
+      span.className = `hl-sentence hl-${label}`;
+      span.textContent = s.text + ' ';
+      span.title = `AI probability: ${s.confidence}%`;
+      highlightBody.appendChild(span);
+    });
+    return;
   }
 
+  // Fallback: use heuristic sentence scores when API is unavailable
   heuristic.sentences.forEach(({ text, score }) => {
-    const apiLabel = apiMap[text.trim()];
-    let label;
-    if (apiLabel) {
-      label = apiLabel;
-    } else {
-      label = score >= 60 ? 'ai' : score >= 35 ? 'mixed' : 'human';
-    }
-
+    const label = score >= 55 ? 'ai' : score >= 30 ? 'mixed' : 'human';
     const span = document.createElement('span');
     span.className = `hl-sentence hl-${label}`;
     span.textContent = text + ' ';

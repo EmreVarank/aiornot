@@ -40,10 +40,12 @@ function calcUniformity(sentences) {
   if (m === 0) return { score: 50, label: 'N/A', detail: 'Empty' };
   const cv = stddev(lengths) / m;
 
+  // AI text: very uniform (low CV). Human: varies more (high CV).
   let score;
-  if (cv < 0.25) score = clamp(85 + (0.25 - cv) * 60, 0, 100);
-  else if (cv <= 0.45) score = 50 + (0.45 - cv) * 175;
-  else score = clamp(50 - (cv - 0.45) * 80, 10, 50);
+  if (cv < 0.20) score = clamp(95 + (0.20 - cv) * 50, 0, 100);
+  else if (cv < 0.35) score = 65 + (0.35 - cv) * 200;
+  else if (cv <= 0.55) score = 40 + (0.55 - cv) * 125;
+  else score = clamp(40 - (cv - 0.55) * 80, 5, 40);
 
   return { score: Math.round(score), label: scoreLabel(score), detail: `CV: ${cv.toFixed(2)}` };
 }
@@ -75,12 +77,15 @@ function calcVocabulary(words) {
   filtered.forEach(w => { freq[w] = (freq[w] || 0) + 1; });
   const hapax = Object.values(freq).filter(c => c === 1).length / Object.keys(freq).length;
 
+  // AI text tends to be moderate vocabulary — not too repetitive, not wildly varied.
+  // Very low MATTR = repetitive (slightly AI-like), moderate = AI sweet spot, high = human
   let score;
-  if (mattr < 0.55) score = clamp(70 + (0.55 - mattr) * 200, 0, 100);
-  else if (mattr <= 0.72) score = 35 + (0.72 - mattr) * 206;
-  else score = clamp(35 - (mattr - 0.72) * 107, 5, 35);
+  if (mattr < 0.55) score = clamp(65 + (0.55 - mattr) * 180, 0, 100);
+  else if (mattr <= 0.70) score = 40 + (0.70 - mattr) * 167;
+  else score = clamp(40 - (mattr - 0.70) * 100, 5, 40);
 
-  if (hapax < 0.4) score = clamp(score + 10, 0, 100);
+  // Low hapax ratio suggests repetitive vocabulary (AI-like)
+  if (hapax < 0.35) score = clamp(score + 15, 0, 100);
 
   return { score: Math.round(score), label: scoreLabel(score), detail: `MATTR: ${mattr.toFixed(2)}` };
 }
@@ -104,13 +109,14 @@ function calcBurstiness(sentences) {
   }
 
   const dm = mean(diffs);
-  if (dm === 0) return { score: 90, label: 'High', detail: 'Completely uniform rhythm' };
+  if (dm === 0) return { score: 95, label: 'High', detail: 'Completely uniform rhythm' };
   const burstiness = stddev(diffs) / dm;
 
+  // Low burstiness = AI (smooth, predictable complexity changes)
   let score;
-  if (burstiness < 0.5) score = clamp(75 + (0.5 - burstiness) * 50, 0, 100);
-  else if (burstiness <= 1.0) score = 35 + (1.0 - burstiness) * 80;
-  else score = clamp(35 - (burstiness - 1.0) * 30, 5, 35);
+  if (burstiness < 0.4) score = clamp(85 + (0.4 - burstiness) * 62, 0, 100);
+  else if (burstiness <= 0.9) score = 40 + (0.9 - burstiness) * 90;
+  else score = clamp(40 - (burstiness - 0.9) * 35, 5, 40);
 
   return { score: Math.round(score), label: scoreLabel(score), detail: `Burstiness: ${burstiness.toFixed(2)}` };
 }
@@ -118,29 +124,112 @@ function calcBurstiness(sentences) {
 // ─── Metric 4: AI Phrase Patterns ───────────────────────────────────────────
 
 const AI_PATTERNS = [
-  // Weight 3
-  { p: "it's worth noting", w: 3 }, { p: "it is worth noting", w: 3 },
-  { p: "it's important to note", w: 3 }, { p: "it is important to note", w: 3 },
-  { p: "this underscores", w: 3 }, { p: "plays a crucial role", w: 3 },
-  { p: "it is essential to", w: 3 }, { p: "a testament to", w: 3 },
-  { p: "serves as a reminder", w: 3 }, { p: "navigating the complexities", w: 3 },
-  { p: "in today's rapidly", w: 3 }, { p: "at the forefront", w: 3 },
-  { p: "the landscape of", w: 3 },
-  // Weight 2
-  { p: "moreover", w: 2 }, { p: "furthermore", w: 2 }, { p: "in conclusion", w: 2 },
-  { p: "delve into", w: 2 }, { p: "delve deeper", w: 2 },
-  { p: "here are some", w: 2 }, { p: "there are several", w: 2 },
-  { p: "in summary", w: 2 }, { p: "to summarize", w: 2 }, { p: "in essence", w: 2 },
-  { p: "it should be noted", w: 2 }, { p: "one could argue", w: 2 },
-  { p: "on the other hand", w: 2 }, { p: "having said that", w: 2 },
-  { p: "that being said", w: 2 }, { p: "with that in mind", w: 2 },
-  // Weight 1
-  { p: "groundbreaking", w: 1 }, { p: "transformative", w: 1 }, { p: "revolutionary", w: 1 },
-  { p: "cutting-edge", w: 1 }, { p: "game-changer", w: 1 }, { p: "leverage", w: 1 },
-  { p: "utilize", w: 1 }, { p: "facilitate", w: 1 }, { p: "comprehensive", w: 1 },
-  { p: "robust", w: 1 }, { p: "seamless", w: 1 }, { p: "streamline", w: 1 },
-  { p: "holistic", w: 1 }, { p: "synergy", w: 1 },
-  { p: "i'd be happy to", w: 1 }, { p: "absolutely!", w: 1 }, { p: "great question", w: 1 },
+  // Weight 4 — dead giveaways
+  { p: "it's worth noting", w: 4 },
+  { p: "it is worth noting", w: 4 },
+  { p: "it's important to note", w: 4 },
+  { p: "it is important to note", w: 4 },
+  { p: "this underscores", w: 4 },
+  { p: "plays a crucial role", w: 4 },
+  { p: "plays a vital role", w: 4 },
+  { p: "it is essential to", w: 4 },
+  { p: "a testament to", w: 4 },
+  { p: "serves as a reminder", w: 4 },
+  { p: "navigating the complexities", w: 4 },
+  { p: "in today's rapidly", w: 4 },
+  { p: "at the forefront", w: 4 },
+  { p: "the landscape of", w: 4 },
+  { p: "i'd be happy to", w: 4 },
+  { p: "i'm here to help", w: 4 },
+  { p: "as an ai", w: 4 },
+  { p: "delve into", w: 4 },
+  { p: "delve deeper", w: 4 },
+  { p: "let's delve", w: 4 },
+  // Weight 3 — very common AI phrases
+  { p: "moreover", w: 3 },
+  { p: "furthermore", w: 3 },
+  { p: "in conclusion", w: 3 },
+  { p: "in summary", w: 3 },
+  { p: "to summarize", w: 3 },
+  { p: "in essence", w: 3 },
+  { p: "it should be noted", w: 3 },
+  { p: "one could argue", w: 3 },
+  { p: "on the other hand", w: 3 },
+  { p: "having said that", w: 3 },
+  { p: "that being said", w: 3 },
+  { p: "with that in mind", w: 3 },
+  { p: "here are some", w: 3 },
+  { p: "there are several", w: 3 },
+  { p: "there are many", w: 3 },
+  { p: "it is crucial", w: 3 },
+  { p: "it is vital", w: 3 },
+  { p: "it is imperative", w: 3 },
+  { p: "it is worth", w: 3 },
+  { p: "needless to say", w: 3 },
+  { p: "first and foremost", w: 3 },
+  { p: "last but not least", w: 3 },
+  { p: "in the realm of", w: 3 },
+  { p: "in the world of", w: 3 },
+  { p: "in today's world", w: 3 },
+  { p: "in today's digital", w: 3 },
+  { p: "in recent years", w: 3 },
+  { p: "it goes without saying", w: 3 },
+  { p: "by and large", w: 3 },
+  { p: "all in all", w: 3 },
+  // Weight 2 — common AI words/constructs
+  { p: "groundbreaking", w: 2 },
+  { p: "transformative", w: 2 },
+  { p: "revolutionary", w: 2 },
+  { p: "cutting-edge", w: 2 },
+  { p: "game-changer", w: 2 },
+  { p: "game changer", w: 2 },
+  { p: "leverage", w: 2 },
+  { p: "utilize", w: 2 },
+  { p: "facilitate", w: 2 },
+  { p: "comprehensive", w: 2 },
+  { p: "robust", w: 2 },
+  { p: "seamless", w: 2 },
+  { p: "streamline", w: 2 },
+  { p: "holistic", w: 2 },
+  { p: "synergy", w: 2 },
+  { p: "absolutely!", w: 2 },
+  { p: "great question", w: 2 },
+  { p: "foster", w: 2 },
+  { p: "in order to", w: 2 },
+  { p: "in addition to", w: 2 },
+  { p: "a wide range of", w: 2 },
+  { p: "a variety of", w: 2 },
+  { p: "it is important", w: 2 },
+  { p: "it is necessary", w: 2 },
+  { p: "it is possible", w: 2 },
+  { p: "this allows", w: 2 },
+  { p: "this enables", w: 2 },
+  { p: "this ensures", w: 2 },
+  { p: "this helps", w: 2 },
+  { p: "this means that", w: 2 },
+  { p: "in other words", w: 2 },
+  { p: "to put it simply", w: 2 },
+  { p: "simply put", w: 2 },
+  { p: "as mentioned", w: 2 },
+  { p: "as noted", w: 2 },
+  { p: "as discussed", w: 2 },
+  { p: "as previously", w: 2 },
+  { p: "it's clear that", w: 2 },
+  { p: "it is clear that", w: 2 },
+  { p: "it's evident that", w: 2 },
+  { p: "it is evident that", w: 2 },
+  { p: "undoubtedly", w: 2 },
+  { p: "ultimately", w: 2 },
+  { p: "overall", w: 2 },
+  { p: "however, it", w: 2 },
+  { p: "nevertheless", w: 2 },
+  { p: "consequently", w: 2 },
+  { p: "therefore", w: 2 },
+  { p: "thus", w: 2 },
+  { p: "hence", w: 2 },
+  { p: "significant", w: 2 },
+  { p: "substantial", w: 2 },
+  { p: "paramount", w: 2 },
 ];
 
 function calcPatterns(text, wordCount) {
@@ -154,13 +243,13 @@ function calcPatterns(text, wordCount) {
     if (matches > 0) { weighted += matches * w; found.push(p); }
   });
 
-  const density = weighted / (wordCount / 1000);
+  const density = weighted / (wordCount / 100);  // per 100 words (more sensitive)
   let score;
-  if (density > 8) score = clamp(80 + (density - 8) * 2.5, 0, 100);
-  else if (density >= 3) score = 40 + (density - 3) * 8;
-  else score = clamp(density * 13.3, 5, 40);
+  if (density > 6) score = clamp(85 + (density - 6) * 3, 0, 100);
+  else if (density >= 2) score = 45 + (density - 2) * 10;
+  else score = clamp(density * 22, 5, 45);
 
-  return { score: Math.round(score), label: scoreLabel(score), detail: `Density: ${density.toFixed(1)}/1k words` };
+  return { score: Math.round(score), label: scoreLabel(score), detail: `Density: ${density.toFixed(1)}/100 words` };
 }
 
 // ─── Metric 5: Structural Coherence ─────────────────────────────────────────
@@ -172,16 +261,17 @@ function calcCoherence(paragraphs) {
   const m = mean(pLengths);
   const cv = m > 0 ? stddev(pLengths) / m : 0;
 
-  const topicSentenceRe = /^(the|this|one|in|when|while|as|today|modern|it is|there are|many|most|some)/i;
+  const topicSentenceRe = /^(the|this|one|in|when|while|as|today|modern|it is|there are|many|most|some|overall|additionally|furthermore|moreover)/i;
   const topicCount = paragraphs.filter(p => topicSentenceRe.test(p.trim())).length;
   const topicRatio = topicCount / paragraphs.length;
 
+  // AI: very uniform paragraph lengths (low CV) + formulaic topic sentences
   let score = 50;
-  if (cv < 0.3) score = 70 + (0.3 - cv) * 100;
-  else if (cv < 0.6) score = 40 + (0.6 - cv) * 100;
-  else score = clamp(40 - (cv - 0.6) * 50, 10, 40);
+  if (cv < 0.25) score = 75 + (0.25 - cv) * 120;
+  else if (cv < 0.50) score = 40 + (0.50 - cv) * 140;
+  else score = clamp(40 - (cv - 0.50) * 55, 10, 40);
 
-  score = clamp(score + topicRatio * 20, 0, 100);
+  score = clamp(score + topicRatio * 25, 0, 100);
   return { score: Math.round(score), label: scoreLabel(score), detail: `Para CV: ${cv.toFixed(2)}` };
 }
 
@@ -189,26 +279,37 @@ function calcCoherence(paragraphs) {
 
 const CONTRACTIONS = ["don't","can't","won't","i'm","i've","i'll","it's","he's","she's",
   "we're","they're","isn't","aren't","wasn't","weren't","doesn't","didn't","couldn't",
-  "shouldn't","wouldn't","hasn't","haven't","hadn't","let's","that's","there's","who's","what's"];
+  "shouldn't","wouldn't","hasn't","haven't","hadn't","let's","that's","there's","who's","what's",
+  "you're","you've","you'll","they've","they'll","we've","we'll","i'd","you'd","he'd","she'd",
+  "we'd","they'd","it'll","that'll","there'll","here's","how's","when's","where's","why's"];
 
-const FIRST_PERSON = ['\\bi\\b', '\\bme\\b', '\\bmy\\b', '\\bmine\\b', '\\bmyself\\b',
-  '\\bwe\\b', '\\bus\\b', '\\bour\\b', '\\bours\\b'];
+const FIRST_PERSON = ['\\bi\\b', '\\bme\\b', '\\bmy\\b', '\\bmine\\b', '\\bmyself\\b'];
 
 function calcNaturalness(text, sentences, wordCount) {
   if (wordCount < 20) return { score: 50, label: 'N/A', detail: 'Too short' };
   const lower = text.toLowerCase();
 
   const contractionCount = CONTRACTIONS.reduce((c, x) => c + (lower.split(x).length - 1), 0);
-  const contractionRate = (contractionCount / wordCount) * 1000;
+  const contractionRate = (contractionCount / wordCount) * 100;
 
   const fpCount = FIRST_PERSON.reduce((c, r) => c + (lower.match(new RegExp(r, 'g')) || []).length, 0);
-  const fpRate = (fpCount / wordCount) * 1000;
+  const fpRate = (fpCount / wordCount) * 100;
 
-  const questionRate = sentences.filter(s => s.trim().endsWith('?')).length / sentences.length;
-  const exclRate = sentences.filter(s => s.trim().endsWith('!')).length / sentences.length;
+  const questionCount = sentences.filter(s => s.trim().endsWith('?')).length;
+  const exclCount = sentences.filter(s => s.trim().endsWith('!')).length;
+  const questionRate = questionCount / sentences.length;
+  const exclRate = exclCount / sentences.length;
 
-  const raw = (contractionRate * 0.3) + (fpRate * 0.3) + (questionRate * 100 * 0.2) + (exclRate * 100 * 0.2);
-  const score = clamp(100 - raw * 2, 0, 100);
+  // High naturalness score = more AI (less human markers)
+  // More contractions/first-person = more human = lower AI score
+  const humanScore = clamp(
+    contractionRate * 12 +
+    fpRate * 8 +
+    questionRate * 30 +
+    exclRate * 20,
+    0, 100
+  );
+  const score = clamp(100 - humanScore, 0, 100);
 
   return { score: Math.round(score), label: scoreLabel(score), detail: `Contractions: ${contractionCount}` };
 }
@@ -220,16 +321,33 @@ function scoreSentence(sentence, avgLen, allPatterns) {
   const wc = words.length;
   const lower = sentence.toLowerCase();
 
+  // Length proximity to average (AI = close to average)
   const lenDiff = avgLen > 0 ? Math.abs(wc - avgLen) / avgLen : 0;
-  const lenScore = clamp(lenDiff < 0.3 ? 60 : 60 - (lenDiff - 0.3) * 50, 10, 80);
+  const lenScore = lenDiff < 0.2 ? 70 : lenDiff < 0.4 ? 50 : lenDiff < 0.7 ? 30 : 15;
 
+  // AI pattern matches
   let patternScore = 0;
-  AI_PATTERNS.forEach(({ p, w }) => { if (lower.includes(p)) patternScore += w * 20; });
+  AI_PATTERNS.forEach(({ p, w }) => {
+    if (lower.includes(p)) patternScore += w * 18;
+  });
   patternScore = clamp(patternScore, 0, 100);
 
+  // Human markers
   const hasContraction = CONTRACTIONS.some(c => lower.includes(c));
+  const hasFirstPerson = /\bi\b|\bme\b|\bmy\b/.test(lower);
+  const endsQuestion = sentence.trim().endsWith('?');
+  const endsExclaim = sentence.trim().endsWith('!');
 
-  return clamp(lenScore * 0.25 + patternScore * 0.55 + (hasContraction ? 0 : 20) * 0.2, 0, 100);
+  // Formal AI words
+  const formalWords = ['furthermore','moreover','additionally','consequently','therefore','nevertheless',
+    'utilize','facilitate','comprehensive','implement','leverage','robust','streamline'];
+  const formalCount = formalWords.filter(w => lower.includes(w)).length;
+  const formalScore = clamp(formalCount * 20, 0, 60);
+
+  const humanPenalty = (hasContraction ? 25 : 0) + (hasFirstPerson ? 15 : 0) + (endsQuestion ? 15 : 0) + (endsExclaim ? 10 : 0);
+
+  const raw = lenScore * 0.20 + patternScore * 0.40 + formalScore * 0.20 + (hasContraction ? 0 : 15) * 0.20 - humanPenalty * 0.25;
+  return clamp(Math.round(raw), 0, 100);
 }
 
 // ─── Main Export ─────────────────────────────────────────────────────────────
@@ -240,20 +358,21 @@ function analyzeText(text) {
   const words = getWords(text);
   const wordCount = words.length;
 
-  const uniformity = calcUniformity(sentences);
-  const vocabulary = calcVocabulary(words);
-  const burstiness = calcBurstiness(sentences);
-  const patterns   = calcPatterns(text, wordCount);
-  const coherence  = calcCoherence(paragraphs);
+  const uniformity  = calcUniformity(sentences);
+  const vocabulary  = calcVocabulary(words);
+  const burstiness  = calcBurstiness(sentences);
+  const patterns    = calcPatterns(text, wordCount);
+  const coherence   = calcCoherence(paragraphs);
   const naturalness = calcNaturalness(text, sentences, wordCount);
 
+  // Patterns and uniformity/burstiness are the strongest signals
   const overallScore = Math.round(
-    uniformity.score  * 0.20 +
-    vocabulary.score  * 0.15 +
-    burstiness.score  * 0.20 +
-    patterns.score    * 0.20 +
-    coherence.score   * 0.15 +
-    naturalness.score * 0.10
+    uniformity.score  * 0.22 +
+    vocabulary.score  * 0.12 +
+    burstiness.score  * 0.22 +
+    patterns.score    * 0.25 +
+    coherence.score   * 0.12 +
+    naturalness.score * 0.07
   );
 
   const avgLen = sentences.length ? mean(sentences.map(s => s.split(/\s+/).length)) : 0;
